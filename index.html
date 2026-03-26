@@ -1,1 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEXO — Shopify Growth Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --card: #161614;
+    --border: #2a2a27;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --text: #f0efe8;
+    --muted: #888880;
+    --white: #ffffff;
+  }
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: all 0.25s ease;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 4rem;
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(0px);
+  }
+  nav.scrolled {
+    background: rgba(10,10,8,0.92);
+    border-color: var(--border);
+    backdrop-filter: blur(20px);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.65rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--white); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,71,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,71,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,255,71,0.12) 0%, transparent 70%);
+    top: 5%; right: -100px;
+    animation: pulseGlow 6s ease-in-out infinite;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%);
+    bottom: 20%; left: -50px;
+    animation: pulseGlow 8s ease-in-out infinite reverse;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease both;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 12vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-title .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240,239,232,0.3);
+  }
+  .hero-title .accent-word { color: var(--accent); }
+
+  .hero-sub-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-desc {
+    max-width: 380px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 1rem 2.4rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 1rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-outline:hover { border-color: var(--text); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    position: absolute;
+    top: 50%;
+    right: 4rem;
+    transform: translateY(-50%);
+    z-index: 1;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .stat { text-align: right; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    padding: 0.9rem 0;
+    background: var(--surface);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .marquee-item span { color: var(--accent); font-size: 1rem; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .service-card {
+    background: var(--card);
+    padding: 2.5rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .service-card:hover { background: var(--surface); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .service-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+  }
+  .service-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+  .tag {
+    font-size: 0.65rem;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* PROCESS */
+  .process-section { background: var(--surface); }
+  .process-list {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .process-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .process-item:hover .process-step-num { color: var(--accent); }
+  .process-step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--border);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .process-step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .process-step-sub { font-size: 0.8rem; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+  .process-step-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.7; padding-top: 0.3rem; }
+
+  /* STACK */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .stack-item {
+    background: var(--card);
+    padding: 2rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: background 0.3s;
+  }
+  .stack-item:hover { background: var(--surface); }
+  .stack-item-icon { font-size: 1.6rem; }
+  .stack-item-name { font-weight: 600; font-size: 0.92rem; }
+  .stack-item-desc { font-size: 0.78rem; color: var(--muted); }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+  .price-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    transition: all 0.3s;
+    background: var(--card);
+  }
+  .price-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .price-card.featured {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .featured-label {
+    position: absolute;
+    top: -1px; right: 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.8rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .price-plan { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--muted); }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    margin: 0.5rem 0;
+    color: var(--text);
+  }
+  .price-amount sup { font-size: 1.5rem; vertical-align: top; margin-top: 0.5rem; }
+  .price-cycle { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .price-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .price-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .price-features li::before {
+    content: '↗';
+    color: var(--accent);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .price-btn {
+    display: block;
+    text-align: center;
+    margin-top: 2rem;
+    padding: 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .price-card.featured .price-btn { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .price-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* WHY US */
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+    align-items: center;
+  }
+  .why-visual {
+    position: relative;
+    height: 400px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .why-visual-inner {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .why-cell {
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background 0.5s;
+  }
+  .why-cell:nth-child(odd) { animation: cellBlink 4s infinite; }
+  .why-cell:nth-child(even) { animation: cellBlink 4s 2s infinite; }
+  @keyframes cellBlink {
+    0%,100% { background: var(--card); }
+    50% { background: var(--surface); }
+  }
+  .why-cell-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--accent); }
+  .why-cell-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .why-points { display: flex; flex-direction: column; gap: 1.5rem; }
+  .why-point {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .why-point:last-child { border-bottom: none; }
+  .why-point-icon {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    background: var(--card);
+  }
+  .why-point-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .why-point-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: var(--surface); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+  .testimonial-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: var(--card);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .testimonial-card:hover { border-color: rgba(232,255,71,0.3); }
+  .testimonial-card::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--accent);
+    opacity: 0.15;
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    line-height: 1;
+  }
+  .testimonial-text {
+    font-size: 0.87rem;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--bg);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  .author-name { font-size: 0.85rem; font-weight: 600; }
+  .author-role { font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(232,255,71,0.06) 0%, transparent 70%);
+  }
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    line-height: 0.9;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.5rem;
+  }
+  .cta-title .outline { color: transparent; -webkit-text-stroke: 1px rgba(240,239,232,0.25); }
+  .cta-desc { color: var(--muted); max-width: 400px; margin: 0 auto 2.5rem; font-size: 0.92rem; line-height: 1.7; position: relative; z-index: 1; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; position: relative; z-index: 1; }
+
+  /* CONTACT FORM */
+  .contact-section {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .form-input, .form-textarea, .form-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-select option { background: var(--card); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--white); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 4rem;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; margin-top: 0.8rem; max-width: 220px; }
+  .footer-col-title { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .footer-social { display: flex; gap: 1rem; }
+  .social-link {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .social-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem 4rem; }
+    .hero-title { font-size: clamp(3.5rem, 14vw, 6rem); }
+    .hero-stats { position: static; flex-direction: row; margin-top: 2rem; }
+    .hero-sub-row { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .stack-grid { grid-template-columns: repeat(2, 1fr); }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .contact-section { grid-template-columns: 1fr; gap: 3rem; }
+    footer { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+    .process-item { grid-template-columns: 50px 1fr; }
+    .process-step-desc { grid-column: 2; }
+    body { cursor: default; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="logo" href="#">VEX<span>O</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Start Project</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">120+</div>
+      <div class="stat-label">Stores Built</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3.8×</div>
+      <div class="stat-label">Avg ROAS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Satisfaction</div>
+    </div>
+  </div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Shopify Partner Agency — India
+  </div>
+
+  <h1 class="hero-title">
+    SCALE YOUR<br>
+    <span class="line2">ECOMMERCE</span><br>
+    <span class="accent-word">EMPIRE.</span>
+  </h1>
+
+  <div class="hero-sub-row">
+    <p class="hero-desc">Complete Shopify solutions — from store setup & payment integration to Meta Ads & delivery systems. We build brands that sell.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get Free Audit ↗</a>
+      <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>◆</span> Shopify Development</div>
+    <div class="marquee-item"><span>◆</span> Meta Ads Management</div>
+    <div class="marquee-item"><span>◆</span> Payment Integration</div>
+    <div class="marquee-item"><span>◆</span> Delivery Setup</div>
+    <div class="marquee-item"><span>◆</span> Theme Customization</div>
+    <div class="marquee-item"><span>◆</span> CRO & Analytics</div>
+    <div class="marquee-item"><span>◆</span> Product Research</div>
+    <div class="marquee-item"><span>◆</span> Store Migration</div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item"><span>◆</span> Shopify Development</div>
+    <div class="marquee-item"><span>◆</span> Meta Ads Management</div>
+    <div class="marquee-item"><span>◆</span> Payment Integration</div>
+    <div class="marquee-item"><span>◆</span> Delivery Setup</div>
+    <div class="marquee-item"><span>◆</span> Theme Customization</div>
+    <div class="marquee-item"><span>◆</span> CRO & Analytics</div>
+    <div class="marquee-item"><span>◆</span> Product Research</div>
+    <div class="marquee-item"><span>◆</span> Store Migration</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-title">COMPLETE<br>ECOMMERCE<br>SOLUTIONS</h2>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <span class="service-icon">🏗️</span>
+      <div class="service-num">01 / 07</div>
+      <div class="service-name">Shopify Store Build</div>
+      <div class="service-desc">Custom theme development, product catalog setup, collections, and a fully optimized storefront built to convert.</div>
+      <div class="service-tags"><span class="tag">Custom Theme</span><span class="tag">Liquid</span><span class="tag">Shopify 2.0</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💳</span>
+      <div class="service-num">02 / 07</div>
+      <div class="service-name">Payment Integration</div>
+      <div class="service-desc">Razorpay, PayU, Stripe, UPI, COD, and international gateways. Complete checkout optimization with trust signals.</div>
+      <div class="service-tags"><span class="tag">Razorpay</span><span class="tag">Stripe</span><span class="tag">UPI</span><span class="tag">COD</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🚚</span>
+      <div class="service-num">03 / 07</div>
+      <div class="service-name">Delivery & Logistics</div>
+      <div class="service-desc">Shiprocket, Delhivery, Bluedart integration. Automated shipping rules, tracking pages, and returns management.</div>
+      <div class="service-tags"><span class="tag">Shiprocket</span><span class="tag">Delhivery</span><span class="tag">Bluedart</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📱</span>
+      <div class="service-num">04 / 07</div>
+      <div class="service-name">Meta Ads Management</div>
+      <div class="service-desc">Full-funnel Facebook & Instagram ad campaigns. Creative strategy, audience research, retargeting, and scaling.</div>
+      <div class="service-tags"><span class="tag">Facebook Ads</span><span class="tag">Instagram</span><span class="tag">Retargeting</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📊</span>
+      <div class="service-num">05 / 07</div>
+      <div class="service-name">CRO & Analytics</div>
+      <div class="service-desc">Data-driven optimization of product pages, checkout flows, and AOV. GA4, Hotjar, and Pixel setup included.</div>
+      <div class="service-tags"><span class="tag">GA4</span><span class="tag">Hotjar</span><span class="tag">A/B Testing</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🔧</span>
+      <div class="service-num">06 / 07</div>
+      <div class="service-name">Apps & Automation</div>
+      <div class="service-desc">Klaviyo email flows, WhatsApp marketing, loyalty programs, upsell apps, and full backend automation.</div>
+      <div class="service-tags"><span class="tag">Klaviyo</span><span class="tag">WhatsApp</span><span class="tag">Loyalty</span></div>
+    </div>
+    <div class="service-card" style="grid-column: span 3; display: flex; align-items: center; justify-content: space-between; flex-direction: row; gap: 2rem;">
+      <div>
+        <span class="service-icon">🔄</span>
+        <div class="service-num">07 / 07</div>
+        <div class="service-name">Store Migration</div>
+        <div class="service-desc">Migrate from WooCommerce, Wix, Magento, or any platform to Shopify with zero data loss and zero downtime.</div>
+      </div>
+      <a href="#contact" class="btn-primary" style="flex-shrink:0;">Start Migration ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">OUR 4-STEP<br>PROCESS</h2>
+  <div class="process-list reveal">
+    <div class="process-item">
+      <div class="process-step-num">01</div>
+      <div>
+        <div class="process-step-title">Discovery Call</div>
+        <div class="process-step-sub">Day 1 — Free &amp; Obligation-Free</div>
+      </div>
+      <div class="process-step-desc">We understand your business model, target audience, budget, and goals. You'll get a detailed audit of your current setup or a blueprint for a new store.</div>
+    </div>
+    <div class="process-item">
+      <div class="process-step-num">02</div>
+      <div>
+        <div class="process-step-title">Strategy & Design</div>
+        <div class="process-step-sub">Week 1 — Full Proposal</div>
+      </div>
+      <div class="process-step-desc">Custom store architecture, theme selection or design mockups, ad strategy, and tech stack recommendation tailored to your niche.</div>
+    </div>
+    <div class="process-item">
+      <div class="process-step-num">03</div>
+      <div>
+        <div class="process-step-title">Build & Launch</div>
+        <div class="process-step-sub">Week 2–4 — Full Execution</div>
+      </div>
+      <div class="process-step-desc">Store development, payment & delivery integration, ad account setup, pixel configuration, and rigorous QA before go-live.</div>
+    </div>
+    <div class="process-item">
+      <div class="process-step-num">04</div>
+      <div>
+        <div class="process-step-title">Scale & Grow</div>
+        <div class="process-step-sub">Ongoing — Monthly Retainer</div>
+      </div>
+      <div class="process-step-desc">Ad management, CRO experiments, email automation, and performance reporting. We become your growth partner, not just a vendor.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section>
+  <div class="section-label">Tech Stack</div>
+  <h2 class="section-title">TOOLS WE<br>MASTER</h2>
+  <div class="stack-grid reveal">
+    <div class="stack-item"><div class="stack-item-icon">🟢</div><div class="stack-item-name">Shopify / Plus</div><div class="stack-item-desc">Store platform</div></div>
+    <div class="stack-item"><div class="stack-item-icon">🔵</div><div class="stack-item-name">Meta Business Suite</div><div class="stack-item-desc">Ads management</div></div>
+    <div class="stack-item"><div class="stack-item-icon">💛</div><div class="stack-item-name">Razorpay / PayU</div><div class="stack-item-desc">Payment gateway</div></div>
+    <div class="stack-item"><div class="stack-item-icon">🚀</div><div class="stack-item-name">Shiprocket</div><div class="stack-item-desc">Shipping & logistics</div></div>
+    <div class="stack-item"><div class="stack-item-icon">📧</div><div class="stack-item-name">Klaviyo</div><div class="stack-item-desc">Email marketing</div></div>
+    <div class="stack-item"><div class="stack-item-icon">📊</div><div class="stack-item-name">Google Analytics 4</div><div class="stack-item-desc">Data & analytics</div></div>
+    <div class="stack-item"><div class="stack-item-icon">🔥</div><div class="stack-item-name">Hotjar</div><div class="stack-item-desc">Heatmaps & CRO</div></div>
+    <div class="stack-item"><div class="stack-item-icon">💚</div><div class="stack-item-name">WhatsApp API</div><div class="stack-item-desc">Customer retention</div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background: var(--surface);">
+  <div class="section-label">Packages</div>
+  <h2 class="section-title">TRANSPARENT<br>PRICING</h2>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-plan">Starter</div>
+      <div class="price-amount"><sup>₹</sup>24,999</div>
+      <div class="price-cycle">One-time setup</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Shopify Store Setup</li>
+        <li>Theme Customization</li>
+        <li>Payment Gateway (1)</li>
+        <li>Delivery Integration</li>
+        <li>Up to 50 Products</li>
+        <li>Basic SEO Setup</li>
+        <li>2 Weeks Delivery</li>
+      </ul>
+      <a href="#contact" class="price-btn">Get Started</a>
+    </div>
+
+    <div class="price-card featured">
+      <div class="featured-label">Most Popular</div>
+      <div class="price-plan">Growth</div>
+      <div class="price-amount"><sup>₹</sup>59,999</div>
+      <div class="price-cycle">One-time + 3 months support</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Custom Theme Development</li>
+        <li>All Payment Gateways</li>
+        <li>Multi-carrier Shipping</li>
+        <li>Meta Pixel + Ad Setup</li>
+        <li>Unlimited Products</li>
+        <li>Klaviyo Email Flows</li>
+        <li>GA4 + Analytics</li>
+        <li>3 Months Support</li>
+      </ul>
+      <a href="#contact" class="price-btn">Get Started</a>
+    </div>
+
+    <div class="price-card">
+      <div class="price-plan">Scale</div>
+      <div class="price-amount"><sup>₹</sup>1,19,999</div>
+      <div class="price-cycle">Full retainer — 6 months</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Everything in Growth</li>
+        <li>Monthly Meta Ads Mgmt</li>
+        <li>Full CRO Program</li>
+        <li>Influencer Strategy</li>
+        <li>WhatsApp Automation</li>
+        <li>Weekly Reporting</li>
+        <li>Dedicated Account Manager</li>
+        <li>Priority 24hr Support</li>
+      </ul>
+      <a href="#contact" class="price-btn">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section>
+  <div class="section-label">Why VEXO</div>
+  <h2 class="section-title">WE DELIVER<br>RESULTS</h2>
+  <div class="why-grid reveal">
+    <div class="why-visual">
+      <div class="why-visual-inner">
+        <div class="why-cell"><div class="why-cell-num">120+</div><div class="why-cell-label">Stores Launched</div></div>
+        <div class="why-cell"><div class="why-cell-num">₹12Cr+</div><div class="why-cell-label">Revenue Generated</div></div>
+        <div class="why-cell"><div class="why-cell-num">3.8×</div><div class="why-cell-label">Avg ROAS</div></div>
+        <div class="why-cell"><div class="why-cell-num">48hr</div><div class="why-cell-label">Avg Response Time</div></div>
+      </div>
+    </div>
+    <div class="why-points">
+      <div class="why-point">
+        <div class="why-point-icon">⚡</div>
+        <div>
+          <div class="why-point-title">End-to-End Execution</div>
+          <div class="why-point-desc">From domain setup to first sale — we handle everything. No need to coordinate with 5 different agencies.</div>
+        </div>
+      </div>
+      <div class="why-point">
+        <div class="why-point-icon">🇮🇳</div>
+        <div>
+          <div class="why-point-title">India-First Approach</div>
+          <div class="why-point-desc">We understand Indian payment behaviors, logistics, GST, and local market nuances that foreign agencies miss.</div>
+        </div>
+      </div>
+      <div class="why-point">
+        <div class="why-point-icon">📈</div>
+        <div>
+          <div class="why-point-title">Data-Driven Scaling</div>
+          <div class="why-point-desc">We don't guess. Every decision — from ad creative to checkout flow — is backed by real performance data.</div>
+        </div>
+      </div>
+      <div class="why-point">
+        <div class="why-point-icon">🤝</div>
+        <div>
+          <div class="why-point-title">Long-Term Partnership</div>
+          <div class="why-point-desc">We grow when you grow. Our retainer model means we're invested in your success, not just your project.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-label">Client Love</div>
+  <h2 class="section-title">WHAT BRANDS<br>SAY</h2>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <p class="testimonial-text">VEXO built our entire Shopify store in 3 weeks and set up Meta ads. We hit ₹5 lakh revenue in the first month. Absolute game changers.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AK</div>
+        <div>
+          <div class="author-name">Arjun Kapoor</div>
+          <div class="author-role">Founder, StyleKart</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Migrated from WooCommerce with zero issues. Payment integration was seamless — Razorpay, UPI, everything works perfectly. Very professional team.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PS</div>
+        <div>
+          <div class="author-name">Priya Sharma</div>
+          <div class="author-role">Co-Founder, OrganicNest</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Their Meta ads strategy scaled our ROAS from 1.2× to 4.1× in 60 days. The retargeting funnels they built are absolutely incredible.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RV</div>
+        <div>
+          <div class="author-name">Rahul Verma</div>
+          <div class="author-role">CEO, FitGear India</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title">READY TO<br><span class="outline">BUILD &</span><br>SCALE?</h2>
+  <p class="cta-desc">Book a free 30-minute strategy call. We'll audit your store or help you build one from scratch — zero pressure.</p>
+  <div class="cta-actions">
+    <a href="#contact" class="btn-primary">Book Free Call ↗</a>
+    <a href="https://wa.me/919999999999" class="btn-outline">💬 WhatsApp Us</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div>
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">LET'S BUILD<br>TOGETHER</h2>
+    <p style="color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; margin-bottom: 2rem;">Fill in the form and we'll get back to you within 24 hours with a custom proposal tailored to your business.</p>
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+      <div style="display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; color: var(--muted);">
+        <span style="color: var(--accent);">📧</span> hello@vexo.agency
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; color: var(--muted);">
+        <span style="color: var(--accent);">📞</span> +91 99999 99999
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; color: var(--muted);">
+        <span style="color: var(--accent);">📍</span> Delhi, India (Remote-First)
+      </div>
+    </div>
+  </div>
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        <input class="form-input" type="text" placeholder="Hari Om" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        <input class="form-input" type="text" placeholder="Sharma">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" placeholder="you@business.com" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone / WhatsApp</label>
+      <input class="form-input" type="tel" placeholder="+91 98765 43210">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Service Needed</label>
+      <select class="form-select form-input">
+        <option>New Shopify Store</option>
+        <option>Store Migration</option>
+        <option>Meta Ads Management</option>
+        <option>Payment Integration</option>
+        <option>Complete Package</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tell Us About Your Project</label>
+      <textarea class="form-textarea" placeholder="Describe your business, current challenges, and what you want to achieve..."></textarea>
+    </div>
+    <button type="submit" class="form-submit">Send Message →</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <a class="logo" href="#">VEX<span>O</span></a>
+    <p class="footer-brand-desc">India's premier Shopify agency. We build, grow, and scale ecommerce brands with full-stack solutions.</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Services</div>
+    <ul class="footer-links">
+      <li><a href="#">Store Development</a></li>
+      <li><a href="#">Meta Ads</a></li>
+      <li><a href="#">Payment Setup</a></li>
+      <li><a href="#">Delivery Integration</a></li>
+      <li><a href="#">Email Marketing</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Company</div>
+    <ul class="footer-links">
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Case Studies</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Careers</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Legal</div>
+    <ul class="footer-links">
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Refund Policy</a></li>
+      <li><a href="#">NDA</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <div class="footer-copy">© 2025 VEXO Agency. All rights reserved. Built with ♥ in India.</div>
+  <div class="footer-social">
+    <a class="social-link" href="#">in</a>
+    <a class="social-link" href="#">ig</a>
+    <a class="social-link" href="#">tw</a>
+    <a class="social-link" href="#">wa</a>
+  </div>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+  });
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform += ' scale(2)'; ring.style.transform += ' scale(1.5)'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.opacity = '0.5'; });
+  });
+
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = '#22c55e';
+    setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>
